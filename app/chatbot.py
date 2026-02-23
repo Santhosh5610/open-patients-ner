@@ -1,10 +1,10 @@
 """
-chatbot.py — NER Assistant: tool definitions, dispatch, system prompt, and chat turn runner.
+chatbot.py - NER Assistant: tool definitions, dispatch, system prompt, and chat turn runner.
 
-Architecture: Anthropic tool use (function calling)
-  - LLM handles intent naturally
-  - Python functions query DataFrames deterministically (no hallucinated numbers)
-  - Static project knowledge lives in the system prompt
+The model handles intent; Python functions handle the actual data lookups.
+That split is intentional, anything touching numbers goes through a DataFrame
+so the model can't hallucinate stats. Static knowledge (methodology, limitations)
+lives directly in the system prompt since it doesn't change.
 """
 
 import os
@@ -17,13 +17,11 @@ import streamlit as st
 
 from data import CATEGORIES, load_all
 
-# ── Load data once ────────────────────────────────────────────
+# ── Load once at module import,  no need to reload on every chat turn 
 coded_df, entity_df, freq_df = load_all()
 
 
-# ══════════════════════════════════════════════════════════════
 # HELPERS
-# ══════════════════════════════════════════════════════════════
 
 def _parse_sources(src_str) -> str:
     if pd.isna(src_str):
@@ -42,9 +40,10 @@ def _get_api_key() -> str:
     return key
 
 
-# ══════════════════════════════════════════════════════════════
-# TOOL FUNCTIONS — deterministic DataFrame lookups
-# ══════════════════════════════════════════════════════════════
+
+# TOOL FUNCTIONS
+# Each of these is a plain DataFrame lookup — the model calls them
+# by name, we run the query, hand the JSON result back.
 
 def lookup_entity(entity_name: str) -> str:
     name = entity_name.strip().lower()
@@ -150,8 +149,8 @@ def get_dataset_summary() -> str:
 
 
 def get_global_top_entities(n: int = 5) -> str:
-    """Return the top N entities by record_count across ALL categories."""
-    n = max(1, min(int(n), 20))  # clamp between 1 and 20
+    """Top N entities by record count, ranked across all four categories combined."""
+    n = max(1, min(int(n), 20))  # keep n sane — anything outside 1-20 is probably a mistake
     top = (freq_df.sort_values("record_count", ascending=False)
                   .head(n)
                   .reset_index(drop=True))
@@ -176,9 +175,9 @@ def get_global_top_entities(n: int = 5) -> str:
     })
 
 
-# ══════════════════════════════════════════════════════════════
-# TOOL REGISTRY (Anthropic API format)
-# ══════════════════════════════════════════════════════════════
+# TOOL REGISTRY
+# These are the tool definitions we pass to the Anthropic API.
+# The model reads the descriptions and picks which one to call.
 
 TOOLS = [
     {
@@ -256,7 +255,7 @@ _DISPATCH = {
     "get_global_top_entities": lambda a: get_global_top_entities(a.get("n", 5)),
 }
 
-# ── System prompt ─────────────────────────────────────────────
+# ── System prompt — defines behavior, tool selection rules, and all static knowledge ──
 SYSTEM_PROMPT = """You are a data assistant for a medical NER project on the Open-Patients dataset.
 Answer questions about entities extracted from 1,000 clinical records.
 
@@ -300,17 +299,16 @@ LIMITATIONS:
 - Generic terms use parent-level ICD codes, not billable specifics"""
 
 
-# ══════════════════════════════════════════════════════════════
 # CHAT TURN RUNNER
-# ══════════════════════════════════════════════════════════════
 
 def run_turn(user_text: str, api_history: list) -> tuple[str, list[str], list]:
     """
-    Run one turn of the tool-calling loop.
+    Run one full turn: send the message, loop through any tool calls,
+    and return the final reply.
 
     Args:
         user_text:   The user's message.
-        api_history: The full message history for the Anthropic API.
+        api_history: Everything said so far, in Anthropic API format.
 
     Returns:
         (reply_text, tools_used, updated_api_history)
@@ -336,7 +334,7 @@ def run_turn(user_text: str, api_history: list) -> tuple[str, list[str], list]:
         messages=history,
     )
 
-    # Tool-use loop
+    # Keep going until the model stops asking for tools
     while response.stop_reason == "tool_use":
         tool_results = []
         assistant_content = response.content
@@ -345,6 +343,7 @@ def run_turn(user_text: str, api_history: list) -> tuple[str, list[str], list]:
             if block.type == "tool_use":
                 tools_used.append(block.name)
                 func = _DISPATCH.get(block.name)
+                # Run the function if we know it, otherwise return a clear error
                 result = func(block.input) if func else json.dumps({"error": "Unknown tool"})
                 tool_results.append({
                     "type": "tool_result",
@@ -363,6 +362,7 @@ def run_turn(user_text: str, api_history: list) -> tuple[str, list[str], list]:
             messages=history,
         )
 
+    # Pull all text blocks out of the response and stitch them together
     reply = "".join(
         block.text for block in response.content if hasattr(block, "text")
     )
@@ -371,4 +371,4 @@ def run_turn(user_text: str, api_history: list) -> tuple[str, list[str], list]:
 
     history.append({"role": "assistant", "content": response.content})
 
-    return reply, list(dict.fromkeys(tools_used)), history  # deduplicated tool list
+    return reply, list(dict.fromkeys(tools_used)), history  # dict.fromkeys deduplicates while preserving order
