@@ -1,0 +1,41 @@
+category,rank,entity,record_count,avg_confidence,sources
+Condition,1,infection,27,0.9371296296296295,"{'pmc': np.int64(26), 'trec-ct': np.int64(1)}"
+Condition,2,diabetes,24,0.902975,"{'pmc': np.int64(20), 'trec-ct': np.int64(3), 'trec-cds': np.int64(1)}"
+Condition,3,pneumonia,23,0.9724086956521739,"{'pmc': np.int64(21), 'trec-cds': np.int64(2)}"
+Condition,4,adenocarcinoma,19,0.9701105263157894,"{'pmc': np.int64(17), 'trec-ct': np.int64(2)}"
+Condition,5,carcinoma,19,0.9322789473684211,{'pmc': np.int64(19)}
+Condition,6,fracture,13,0.8956384615384615,"{'pmc': np.int64(11), 'trec-cds': np.int64(1), 'usmle': np.int64(1)}"
+Condition,7,thrombosis,9,0.9548222222222221,"{'pmc': np.int64(7), 'trec-ct': np.int64(1), 'trec-cds': np.int64(1)}"
+Condition,8,coronary artery disease,9,0.9457777777777778,"{'trec-cds': np.int64(5), 'trec-ct': np.int64(3), 'pmc': np.int64(1)}"
+Condition,9,hiv,9,0.9329555555555555,{'pmc': np.int64(9)}
+Condition,10,hepatitis,9,0.9099666666666667,{'pmc': np.int64(9)}
+Symptom,1,pain,300,0.9959696666666668,"{'pmc': np.int64(239), 'trec-ct': np.int64(27), 'trec-cds': np.int64(22), 'usmle': np.int64(12)}"
+Symptom,2,mass,181,0.9965104972375691,"{'pmc': np.int64(164), 'trec-ct': np.int64(7), 'usmle': np.int64(5), 'trec-cds': np.int64(5)}"
+Symptom,3,tumor,126,0.9868960317460318,"{'pmc': np.int64(121), 'trec-ct': np.int64(4), 'trec-cds': np.int64(1)}"
+Symptom,4,lesion,115,0.9883982608695653,"{'pmc': np.int64(109), 'trec-ct': np.int64(5), 'trec-cds': np.int64(1)}"
+Symptom,5,fever,98,0.9931306122448981,"{'pmc': np.int64(81), 'trec-cds': np.int64(8), 'usmle': np.int64(5), 'trec-ct': np.int64(4)}"
+Symptom,6,swelling,74,0.997481081081081,"{'pmc': np.int64(62), 'usmle': np.int64(5), 'trec-ct': np.int64(4), 'trec-cds': np.int64(3)}"
+Symptom,7,tenderness,69,0.9936434782608696,"{'pmc': np.int64(51), 'trec-ct': np.int64(7), 'trec-cds': np.int64(7), 'usmle': np.int64(4)}"
+Symptom,8,bleeding,56,0.9871696428571429,"{'pmc': np.int64(48), 'trec-ct': np.int64(4), 'usmle': np.int64(2), 'trec-cds': np.int64(2)}"
+Symptom,9,vomiting,54,0.9905574074074074,"{'pmc': np.int64(45), 'trec-ct': np.int64(5), 'usmle': np.int64(2), 'trec-cds': np.int64(2)}"
+Symptom,10,nodule,51,0.9818764705882352,"{'pmc': np.int64(47), 'trec-ct': np.int64(3), 'usmle': np.int64(1)}"
+Medication,1,antibiotic,58,0.9868844827586207,"{'pmc': np.int64(56), 'trec-ct': np.int64(2)}"
+Medication,2,steroid,22,0.9526181818181818,"{'pmc': np.int64(20), 'trec-ct': np.int64(1), 'trec-cds': np.int64(1)}"
+Medication,3,heparin,17,0.9433941176470588,{'pmc': np.int64(17)}
+Medication,4,insulin,16,0.9622437500000001,"{'pmc': np.int64(12), 'trec-ct': np.int64(2), 'usmle': np.int64(2)}"
+Medication,5,prednisone,14,0.9311857142857143,{'pmc': np.int64(14)}
+Medication,6,warfarin,11,0.9833545454545455,{'pmc': np.int64(11)}
+Medication,7,cyclophosphamide,10,0.99307,"{'pmc': np.int64(9), 'trec-ct': np.int64(1)}"
+Medication,8,dexamethasone,10,0.96851,{'pmc': np.int64(10)}
+Medication,9,prednisolone,10,0.9348599999999999,{'pmc': np.int64(10)}
+Medication,10,doxycycline,8,0.9825625,{'pmc': np.int64(8)}
+Procedure,1,ct,333,0.9966414414414414,"{'pmc': np.int64(308), 'trec-ct': np.int64(12), 'trec-cds': np.int64(12), 'usmle': np.int64(1)}"
+Procedure,2,physical examination,194,0.9896618556701031,"{'pmc': np.int64(135), 'trec-ct': np.int64(22), 'trec-cds': np.int64(20), 'usmle': np.int64(17)}"
+Procedure,3,mri,181,0.9957519337016575,"{'pmc': np.int64(174), 'trec-ct': np.int64(7)}"
+Procedure,4,biopsy,180,0.9876338888888889,"{'pmc': np.int64(164), 'trec-ct': np.int64(14), 'trec-cds': np.int64(2)}"
+Procedure,5,blood pressure,143,0.9877923076923077,"{'pmc': np.int64(90), 'usmle': np.int64(26), 'trec-cds': np.int64(14), 'trec-ct': np.int64(13)}"
+Procedure,6,ultrasound,133,0.9902812030075189,"{'pmc': np.int64(119), 'trec-ct': np.int64(5), 'usmle': np.int64(5), 'trec-cds': np.int64(4)}"
+Procedure,7,x-ray,93,0.9804139784946236,"{'pmc': np.int64(84), 'trec-cds': np.int64(3), 'trec-ct': np.int64(3), 'usmle': np.int64(3)}"
+Procedure,8,laboratory test,82,0.9889804878048781,"{'pmc': np.int64(75), 'usmle': np.int64(3), 'trec-cds': np.int64(2), 'trec-ct': np.int64(2)}"
+Procedure,9,echocardiography,73,0.9753931506849315,"{'pmc': np.int64(70), 'trec-cds': np.int64(3)}"
+Procedure,10,vital sign,71,0.9945732394366197,"{'pmc': np.int64(39), 'trec-ct': np.int64(26), 'usmle': np.int64(5), 'trec-cds': np.int64(1)}"
