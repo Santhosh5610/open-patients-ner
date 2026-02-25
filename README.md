@@ -8,13 +8,18 @@
 
 ```bash
 # 1. Clone
-git clone https://github.com/<your-username>/open-patients-ner.git
+git clone https://github.com/Santhosh5610/open-patients-ner.git
 cd open-patients-ner
 
-# 2. Install dependencies
+# 2. Create virtual environment
+python3 -m venv venv
+source venv/bin/activate        # macOS/Linux
+# venv\Scripts\activate         # Windows
+
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# 3. Run the dashboard + chatbot
+# 4. Run the dashboard + chatbot
 cd app
 export ANTHROPIC_API_KEY="sk-ant-..."   # required for chatbot only
 streamlit run app.py

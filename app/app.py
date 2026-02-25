@@ -317,7 +317,7 @@ with chat_col:
     for i, label in enumerate(SUGGESTIONS):
         col = c1 if i % 2 == 0 else c2
         with col:
-            if st.button(label, key=f"chip_{i}", use_container_width=True):
+            if st.button(label, key=f"chip_{i}", width="stretch"):
                 st.session_state["pending"] = label
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -443,7 +443,7 @@ with dash_col:
                             font=dict(size=12, color="#f1f5f9", family="DM Sans")),
         )
         with (ch1 if idx % 2 == 0 else ch2):
-            st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+            st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
 
     # Filterable lookup table for all 40 coded entities
     st.markdown('<div class="section-rule">Medical Code Lookup — Top 40 Entities</div>',
@@ -462,7 +462,7 @@ with dash_col:
         columns={"category":"Category","rank":"Rank","entity":"Entity","record_count":"Records",
                  "code":"Code","code_desc":"Description","code_system":"System"})
 
-    st.dataframe(table_df, use_container_width=True, hide_index=True, height=430,
+    st.dataframe(table_df, width="stretch", hide_index=True, height=430,
         column_config={
             "Category": st.column_config.TextColumn(width="small"),
             "Rank":     st.column_config.NumberColumn(width="small", format="%d"),
